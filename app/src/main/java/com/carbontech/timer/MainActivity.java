@@ -3,6 +3,7 @@ package com.carbontech.timer;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.util.Log;
@@ -12,25 +13,43 @@ public class MainActivity extends AppCompatActivity {
 
     TextView timer_text_view;
     SeekBar timer_inout;
+    boolean isRuning = false;
+    Button action_button;
+    CountDownTimer countDownTimer;
+
+    public void stopTimerActiveState() {
+        isRuning = false;
+        action_button.setText("Go");
+        timer_text_view.setText("00:30");
+        timer_inout.setProgress(30);
+        countDownTimer.cancel();
+        timer_inout.setEnabled(true);
+    }
 
     public void timerController(View view) {
 
-        new CountDownTimer(timer_inout.getProgress() * 1000 + 100, 1000) {
+        if (!isRuning){
 
-            @Override
-            public void onTick(long millisUntilFinished) {
-                Log.i("timer", Long.toString(millisUntilFinished));
-                updateTimer((int) millisUntilFinished / 1000);
-            }
+            isRuning = true;
+            action_button.setText("Stop");
+            timer_inout.setEnabled(false);
 
-            @Override
-            public void onFinish() {
-                timer_text_view.setText("00:00");
-                Log.i("timer", "done");
-            }
+            countDownTimer = new CountDownTimer(timer_inout.getProgress() * 1000 + 100, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    Log.i("timer", Long.toString(millisUntilFinished));
+                    updateTimer((int) millisUntilFinished / 1000);
+                }
 
-        }.start();
-
+                @Override
+                public void onFinish() {
+                    stopTimerActiveState();
+                }
+            }.start();
+        }
+        else {
+            stopTimerActiveState();
+        }
     }
 
     public void updateTimer(int progress) {
@@ -63,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         timer_inout = (SeekBar) findViewById(R.id.timer_input);
         timer_text_view = (TextView) findViewById(R.id.timer_test_view);
+        action_button = (Button) findViewById(R.id.action_button);
 
         timer_inout.setMax(600);
         timer_inout.setProgress(30);
