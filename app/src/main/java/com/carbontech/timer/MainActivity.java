@@ -11,10 +11,11 @@ import  android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView timer_text_view;
-    SeekBar timer_inout;
     boolean isRuning = false;
+    
+    SeekBar timer_inout;
     Button action_button;
+    TextView timer_text_view;
     CountDownTimer countDownTimer;
 
     public void stopTimerActiveState() {
