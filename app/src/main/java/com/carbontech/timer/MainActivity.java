@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     Button action_button;
     TextView timer_text_view;
     CountDownTimer countDownTimer;
+    
 
     public void stopTimerActiveState() {
         isRuning = false;
